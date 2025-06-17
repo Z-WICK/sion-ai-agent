@@ -22,7 +22,7 @@ public class MyLoggerAdvisor implements CallAroundAdvisor, StreamAroundAdvisor {
     public Flux<AdvisedResponse> aroundStream(AdvisedRequest advisedRequest, StreamAroundAdvisorChain chain) {
         advisedRequest = this.before(advisedRequest);
         Flux<AdvisedResponse> advisedResponses = chain.nextAroundStream(advisedRequest);
-        return (new MessageAggregator()).aggregateAdvisedResponse(advisedResponses,this::observeAfter);
+        return (new MessageAggregator()).aggregateAdvisedResponse(advisedResponses, this::observeAfter);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MyLoggerAdvisor implements CallAroundAdvisor, StreamAroundAdvisor {
         return request;
     }
 
-    private void observeAfter(AdvisedResponse advisedResponse){
+    private void observeAfter(AdvisedResponse advisedResponse) {
         assert advisedResponse.response() != null;
         log.info("AI response: {}", advisedResponse.response().getResult().getOutput().getText());
     }

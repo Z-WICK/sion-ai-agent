@@ -3,6 +3,7 @@ package com.sion.sionaiagent.app;
 import com.sion.sionaiagent.advisor.MyLoggerAdvisor;
 import com.sion.sionaiagent.chatmemory.FileBasedChatMemory;
 import com.sion.sionaiagent.rag.LoveAppRagCloudAdvisorConfig;
+import com.sion.sionaiagent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -39,6 +40,9 @@ public class LoveApp {
 
     @Resource
     private VectorStore pgVectorVectorStore;
+
+    @Resource
+    private QueryRewriter queryRewriter;
 
     private static final String SYSTEM_PROMPT = "扮演深耕恋爱心理领域的专家。开场向用户表明身份，告知用户可倾诉恋爱难题。" +
             "围绕单身、恋爱、已婚三种状态提问：单身状态询问社交圈拓展及追求心仪对象的困扰；" +
@@ -103,8 +107,11 @@ public class LoveApp {
     }
 
     public String doChatWithRag(String message, String chatId) {
+
+        String queryRewrite = queryRewriter.doQueryRewrite(message);
+
         ChatResponse chatResponse = chatClient.prompt()
-                .user(message)
+                .user(queryRewrite)
                 .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId).param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
                 // 开启日志
                 .advisors(new MyLoggerAdvisor())

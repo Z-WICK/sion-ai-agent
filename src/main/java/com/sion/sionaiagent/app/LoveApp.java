@@ -3,6 +3,7 @@ package com.sion.sionaiagent.app;
 import com.sion.sionaiagent.advisor.MyLoggerAdvisor;
 import com.sion.sionaiagent.chatmemory.FileBasedChatMemory;
 import com.sion.sionaiagent.rag.LoveAppRagCloudAdvisorConfig;
+import com.sion.sionaiagent.rag.LoveAppRagCustomAdvisorFactory;
 import com.sion.sionaiagent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -122,6 +123,7 @@ public class LoveApp {
 //                .advisors(loveAppRagCloudAdvisor)
                 // 应用 RAG 检索增强服务（基于 PgVector 向量存储）
                 .advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
+                .advisors(LoveAppRagCustomAdvisorFactory.createLoveAppRagCustomAdvisor(loveAppVectorStore,"单身"))
                 .call()
                 .chatResponse();
 

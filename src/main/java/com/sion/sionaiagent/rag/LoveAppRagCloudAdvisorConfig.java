@@ -32,6 +32,7 @@ public class LoveAppRagCloudAdvisorConfig {
                         .build());
         return RetrievalAugmentationAdvisor.builder()
                 .documentRetriever(documentRetriever)
+                .queryAugmenter(LoveAppContextualQueryAugmenterFactory.createInstance())
                 .build();
     }
 }

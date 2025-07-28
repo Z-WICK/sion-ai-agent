@@ -3,11 +3,57 @@ spring:
     name: sion-ai-agent
   profiles:
     active: local
+
+  datasource:
+    url: jdbc:postgresql://your_address/sion-ai-agent
+    username: your_username
+    password: your_password
+    driver-class-name: org.postgresql.Driver
+  ai:
+    mcp:
+      client:
+        sse:
+          connections:
+            server1:
+              url: http://localhost:8127
+        stdio:
+          servers-configuration: classpath:mcp-servers.json
+
+    openai:
+      api-key: your_openai_api_key
+      chat:
+        options:
+          model: gpt-4.1-nano  # 指定模型为 gpt-4o-mini
+          temperature: 0.7    # 控制生成文本的创造性（0.0-2.0，0.7 为默认值）
+          max-tokens: 2048    # 最大生成 tokens 数
+          presence-penalty: 2.0  # 控制模型生成新内容的倾向（-2.0 到 2.0）
+          frequency-penalty: 0.0 # 控制重复内容的惩罚（-2.0 到 2.0）
+      base-url: https://api.openai.com
+      embedding:
+        enabled: false
+
+    dashscope:
+      api-key: your_api_key
+      chat:
+        options:
+          model: qwen-plus
+      embedding:
+        enabled: true
+
+
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+
+
+
 server:
   port: 8123
   servlet:
     context-path: /api
-
 # springdoc-openapi
 springdoc:
   swagger-ui:
@@ -31,3 +77,13 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.sion.sionaiagent.controller
+
+
+
+# search API
+search-api:
+  api-key: your_api_key
+
+
+
+

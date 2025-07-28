@@ -58,7 +58,7 @@ public class LoveApp {
     private final ChatClient chatClient;
 
 
-    public LoveApp(@Qualifier("dashscopeChatModel") ChatModel chatModel) {
+    public LoveApp(@Qualifier("openAiChatModel") ChatModel chatModel) {
         // 初始化基于内存的对话记忆
 //        ChatMemory chatMemory = new InMemoryChatMemory();
 
